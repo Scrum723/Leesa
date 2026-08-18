@@ -1,0 +1,44 @@
+# Manually trigger a quick LEESA health / smoke check
+name: Manual health check
+
+on:
+  workflow_dispatch:
+    inputs:
+      note:
+        description: "Optional note for this run"
+        required: false
+        default: "routine check"
+        type: string
+
+jobs:
+  health:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt pytest
+
+      - name: Import & dashboard smoke
+        env:
+          DRY_RUN: "true"
+        run: |
+          echo "Note: ${{ inputs.note }}"
+          python -c "from src.config import load_settings; print('settings ok', load_settings().streamer_name)"
+          python -c "from src import db; db.init_db(); print('db ok')"
+          python -c "from dashboard.app import create_app; from src.agent import SocialMediaLiaisonAgent; from src.config import load_settings; from src import db; s=load_settings(); db.init_db(); a=SocialMediaLiaisonAgent(s); c=create_app(a).test_client(); print('legal', c.get('/legal').status_code); print('status', c.get('/api/status').status_code)"
+          pytest -q
+
+      - name: Ping Railway (optional)
+        continue-on-error: true
+        run: |
+          curl -fsS -o /dev/null -w "railway_legal:%{http_code}\n" https://social-media-liaison-production.up.railway.app/legal || true
+          curl -fsS -o /dev/null -w "railway_status:%{http_code}\n" https://social-media-liaison-production.up.railway.app/api/status || true

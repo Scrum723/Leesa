@@ -144,3 +144,16 @@ Slash: `/social-media-liaison`
 ---
 
 Stay accurate. Stay informed.
+
+## GitHub Actions / support system
+
+Workflows live in `.github/workflows/` — see [.github/SUPPORT.md](.github/SUPPORT.md).
+
+- **Python CI** — flake8 + smoke tests
+- **CodeQL** — security scan (Python, JS/TS, Actions)
+- **Dependency Review** — PR dependency checks
+- **Greetings** — first issue/PR welcome
+- **Stale** — inactive issue cleanup
+- **Manual health check** — Actions → Run workflow
+
+Repo: https://github.com/Scrum723/Leesa
