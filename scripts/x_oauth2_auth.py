@@ -83,7 +83,7 @@ def main() -> None:
             if "code" in params:
                 result["code"] = params["code"][0]
                 result["state"] = params.get("state", [""])[0]
-                body = b"<html><body><h2>X auth OK — you can close this tab.</h2></body></html>"
+                body = b"<html><body><h2>X auth OK - you can close this tab.</h2></body></html>"
                 self.send_response(200)
             else:
                 body = b"<html><body><h2>Missing code</h2></body></html>"
