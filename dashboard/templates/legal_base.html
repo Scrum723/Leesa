@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+<nav class="legal-tabs" aria-label="Legal documents">
+  <a href="{{ url_for('legal_hub') }}" class="{% if request.path == '/legal' %}active{% endif %}">Overview</a>
+  <a href="{{ url_for('legal_terms') }}" class="{% if request.path.endswith('/terms') %}active{% endif %}">Terms of Service</a>
+  <a href="{{ url_for('legal_privacy') }}" class="{% if request.path.endswith('/privacy') %}active{% endif %}">Privacy Policy</a>
+  <a href="{{ url_for('legal_data') }}" class="{% if request.path.endswith('/data-collection') %}active{% endif %}">Data Collection</a>
+  <a href="{{ url_for('legal_violations') }}" class="{% if request.path.endswith('/violations') %}active{% endif %}">Violations &amp; Acceptable Use</a>
+</nav>
+
+<article class="panel legal-doc">
+  {% block legal_body %}{% endblock %}
+</article>
+
+<p class="muted legal-footer-note">
+  Questions: contact via <a href="{{ linktree }}" target="_blank" rel="noopener">linktr.ee/URP</a>
+  · Last updated: August 9, 2026
+</p>
+{% endblock %}

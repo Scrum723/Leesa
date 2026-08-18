@@ -1,0 +1,159 @@
+# Social Media Liaison Agent — Doc Weather / Charles Clottin
+# Restart the agent after edits (or use dashboard to toggle live settings).
+
+brand:
+  streamer_name: "Doc Weather"
+  display_name: "Charles Clottin"
+  persona: |
+    You are the social media liaison for Doc Weather (Charles Clottin), a meteorologist
+    focused on Western New York (Buffalo/KBUF) weather with national outlooks.
+    Voice: accurate, energetic, local pride, no hype beyond the data.
+    Always include or point to https://linktr.ee/URP when a CTA fits.
+    Sign-off vibe: "Stay accurate. Stay informed."
+  linktree: "https://linktr.ee/URP"
+  default_hashtags:
+    - "#WNYWeather"
+    - "#Buffalo"
+    - "#NYwx"
+    - "#WeatherTok"
+    - "#DocWeather"
+  socials:
+    x: "https://x.com/charlesclottin"
+    youtube: "https://www.youtube.com/@theweathermandj"
+    instagram: "https://www.instagram.com/charlesclottin"
+    tiktok: "docweather"
+    facebook: "https://www.facebook.com/Charles.clottin"
+
+# Platforms the poster + monitor will use (dashboard can enable/disable)
+enabled_platforms:
+  - x
+  - instagram
+  - tiktok
+  - youtube
+
+# Per-platform behavior (also editable via dashboard → stored in SQLite overlay)
+platforms:
+  x:
+    enabled: true
+    post_as: "tweet_with_video"  # tweet_with_video | thread
+    max_hashtags: 3
+    reply_to_comments: true
+    reply_mode: "ai"            # ai | template | off
+    notify_followers: true      # community-style follow-up tweet
+    max_replies_per_hour: 20
+    engage_keywords: ["weather", "buffalo", "storm", "forecast", "wny"]
+    ignore_users: []
+  instagram:
+    enabled: true
+    post_as: "reel"
+    max_hashtags: 12
+    reply_to_comments: true
+    reply_mode: "ai"
+    notify_followers: true      # story sticker / caption CTA
+    max_replies_per_hour: 15
+    engage_keywords: ["weather", "buffalo", "storm"]
+  tiktok:
+    enabled: true
+    post_as: "video"
+    max_hashtags: 8
+    reply_to_comments: true
+    reply_mode: "ai"
+    notify_followers: true
+    max_replies_per_hour: 15
+    privacy_level: "PUBLIC_TO_EVERYONE"
+    disable_duet: false
+    disable_comment: false
+    disable_stitch: false
+  youtube:
+    enabled: true
+    post_as: "short"            # short | video
+    max_hashtags: 15
+    category_id: "28"           # Science & Technology (weather-adjacent); override if needed
+    privacy_status: "public"    # public | unlisted | private
+    reply_to_comments: true
+    reply_mode: "ai"
+    notify_subscribers: true    # notifySubscribers on upload
+    max_replies_per_hour: 20
+    made_for_kids: false
+
+# Video inbox watcher
+watcher:
+  poll_seconds: 15
+  # Extensions treated as postable videos
+  extensions: [".mp4", ".mov", ".m4v", ".avi", ".mkv"]
+  # Wait until file size is stable for N seconds (upload finished)
+  settle_seconds: 8
+  # After successful multi-platform post, move file here (relative to project)
+  archive_dir: "data/posted"
+  # Max videos to queue per day (0 = unlimited)
+  max_posts_per_day: 3
+
+# Daily posting schedule (local timezone)
+schedule:
+  timezone: "America/New_York"
+  # When to post the next queued video each day (24h HH:MM)
+  daily_post_time: "10:00"
+  # Analytics report generation
+  daily_analytics_time: "21:00"
+  # Continuous engagement poll interval (seconds)
+  engagement_poll_seconds: 90
+  # Account activity monitor interval (seconds)
+  monitor_poll_seconds: 120
+
+# Content generation (SpaceXAI)
+content:
+  style: "viral_weather"
+  title_max_chars:
+    x: 100
+    instagram: 100
+    tiktok: 100
+    youtube: 100
+  description_max_chars:
+    x: 260
+    instagram: 2000
+    tiktok: 2200
+    youtube: 4800
+  always_cta: true
+  cta_url: "https://linktr.ee/URP"
+
+# Engagement
+engagement:
+  auto_reply: true
+  # Only reply to comments matching these (empty = all non-spam)
+  require_keyword_match: false
+  min_comment_length: 2
+  cooldown_seconds_per_user: 300
+  # Escalate important activity alerts
+  alert_on:
+    - high_engagement       # sudden spike in likes/comments
+    - mention               # brand mentions when API allows
+    - negative_sentiment    # rough heuristic / AI flag
+    - verified_reply        # reply from verified / high-follower
+    - error                 # posting failures
+  high_engagement_threshold:
+    comments_1h: 25
+    likes_1h: 200
+
+# Analytics
+analytics:
+  retention_days: 90
+  chart_dir: "data/charts"
+  metrics:
+    - views
+    - likes
+    - comments
+    - shares
+    - saves
+
+# Logging
+logging:
+  level: "INFO"
+  file: "logs/liaison.log"
+  jsonl: "logs/events.jsonl"
+  max_bytes: 10485760
+  backup_count: 5
+
+# Dashboard defaults
+dashboard:
+  title: "Social Media Liaison — Doc Weather"
+  show_dry_run_banner: true

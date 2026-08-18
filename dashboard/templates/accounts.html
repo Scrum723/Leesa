@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block title %}Accounts{% endblock %}
+{% block heading %}Connected accounts{% endblock %}
+{% block content %}
+<section class="panel">
+  <h2>Profiles</h2>
+  <p class="muted">List of profiles the agent manages. API credentials live in <span class="mono">.env</span>; profiles here control which handles appear in the UI and per-account enable flags.</p>
+  <table>
+    <thead>
+      <tr><th>Platform</th><th>Handle</th><th>Display</th><th>API</th><th>Enabled</th><th>Actions</th></tr>
+    </thead>
+    <tbody>
+      {% for a in accounts %}
+      <tr>
+        <td>{{ a.platform }}</td>
+        <td>@{{ a.handle }}</td>
+        <td>{{ a.display_name or '—' }}</td>
+        <td>
+          {% set c = creds.get(a.platform, {}) %}
+          {% if c.connected %}<span class="badge ok">ready</span>{% else %}<span class="badge warn">missing keys</span>{% endif %}
+        </td>
+        <td>{% if a.enabled %}<span class="badge ok">on</span>{% else %}<span class="badge">off</span>{% endif %}</td>
+        <td>
+          <form class="inline" method="post" action="{{ url_for('accounts_toggle', account_id=a.id) }}">
+            <button class="btn small" type="submit">Toggle</button>
+          </form>
+          <form class="inline" method="post" action="{{ url_for('accounts_delete', account_id=a.id) }}" onsubmit="return confirm('Remove this account?');">
+            <button class="btn small danger" type="submit">Remove</button>
+          </form>
+        </td>
+      </tr>
+      {% else %}
+      <tr><td colspan="6" class="muted">No accounts yet.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+
+<section class="panel">
+  <h2>Add account</h2>
+  <form method="post" action="{{ url_for('accounts_add') }}">
+    <div class="form-grid">
+      <div>
+        <label for="platform">Platform</label>
+        <select id="platform" name="platform" required>
+          {% for p in platforms %}
+          <option value="{{ p }}">{{ p }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div>
+        <label for="handle">Handle</label>
+        <input id="handle" name="handle" type="text" placeholder="charlesclottin" required />
+      </div>
+      <div>
+        <label for="display_name">Display name</label>
+        <input id="display_name" name="display_name" type="text" placeholder="Doc Weather" />
+      </div>
+    </div>
+    <label class="checkbox-row"><input type="checkbox" name="enabled" checked /> Enabled for agent</label>
+    <p style="margin-top:0.75rem"><button class="btn primary" type="submit">Add / update account</button></p>
+  </form>
+</section>
+
+<section class="panel">
+  <h2>Credential checklist</h2>
+  <table>
+    <thead><tr><th>Platform</th><th>Status</th><th>Env keys</th></tr></thead>
+    <tbody>
+      <tr><td>X</td><td>{% if creds.x.connected %}<span class="badge ok">set</span>{% else %}<span class="badge warn">missing</span>{% endif %}</td><td class="mono muted">X_API_KEY, X_API_SECRET, X_ACCESS_TOKEN, X_ACCESS_TOKEN_SECRET</td></tr>
+      <tr><td>Instagram</td><td>{% if creds.instagram.connected %}<span class="badge ok">set</span>{% else %}<span class="badge warn">missing</span>{% endif %}</td><td class="mono muted">INSTAGRAM_ACCESS_TOKEN, INSTAGRAM_BUSINESS_ACCOUNT_ID</td></tr>
+      <tr><td>TikTok</td><td>{% if creds.tiktok.connected %}<span class="badge ok">set</span>{% else %}<span class="badge warn">missing</span>{% endif %}</td><td class="mono muted">TIKTOK_ACCESS_TOKEN (+ client key/secret)</td></tr>
+      <tr><td>YouTube</td><td>{% if creds.youtube.connected %}<span class="badge ok">set</span>{% else %}<span class="badge warn">missing</span>{% endif %}</td><td class="mono muted">YOUTUBE_CLIENT_SECRETS_FILE or refresh token</td></tr>
+    </tbody>
+  </table>
+</section>
+{% endblock %}

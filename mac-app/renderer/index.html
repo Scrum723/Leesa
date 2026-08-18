@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Doc Weather Liaison</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="shell">
+    <aside class="side">
+      <div class="brand">
+        <div class="brand-title">Doc Weather</div>
+        <div class="brand-sub">Social Media Liaison</div>
+      </div>
+
+      <div class="block">
+        <div class="label">Railway dashboard</div>
+        <button id="btn-dashboard" class="btn primary">Open control room</button>
+        <button id="btn-browser" class="btn">Open in Safari/Chrome</button>
+      </div>
+
+      <div class="block">
+        <div class="label">Content library</div>
+        <p id="lib-path" class="mono path"></p>
+        <button id="btn-open-lib" class="btn">Open in Finder</button>
+        <button id="btn-choose-lib" class="btn">Choose folder…</button>
+        <button id="btn-videos" class="btn">videos/ready</button>
+        <button id="btn-articles" class="btn">articles/ready</button>
+        <button id="btn-new-bundle" class="btn primary">New bundle (video + writing)</button>
+      </div>
+
+      <div class="block">
+        <div class="label">Local library scan</div>
+        <div id="counts" class="counts">—</div>
+        <button id="btn-scan" class="btn">Refresh list</button>
+        <ul id="item-list" class="item-list"></ul>
+      </div>
+
+      <div class="block status">
+        <div class="label">Status</div>
+        <div id="status-line" class="muted">Starting…</div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <div class="toolbar">
+        <span class="muted">Cloud dashboard (Railway)</span>
+        <span id="agent-pill" class="pill">local agent</span>
+      </div>
+      <webview id="dash" allowpopups></webview>
+      <div id="fallback" class="fallback hidden">
+        <p>If the embedded view is blank, use <strong>Open in Safari/Chrome</strong>.</p>
+        <p class="mono" id="fallback-url"></p>
+      </div>
+    </main>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>

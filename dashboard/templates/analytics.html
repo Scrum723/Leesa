@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block title %}Analytics{% endblock %}
+{% block heading %}Engagement analytics{% endblock %}
+{% block content %}
+<div class="panel-header" style="margin-bottom:1rem">
+  <p class="muted" style="margin:0">Daily charts and performance snapshots for every tracked post/video.</p>
+  <form method="post" action="{{ url_for('analytics_refresh') }}">
+    <button class="btn primary" type="submit">Refresh metrics + report</button>
+  </form>
+</div>
+
+<div class="grid">
+  <div class="card"><div class="label">Views</div><div class="value">{{ summary.totals.views if summary.totals else 0 }}</div></div>
+  <div class="card"><div class="label">Likes</div><div class="value">{{ summary.totals.likes if summary.totals else 0 }}</div></div>
+  <div class="card"><div class="label">Comments</div><div class="value">{{ summary.totals.comments if summary.totals else 0 }}</div></div>
+  <div class="card"><div class="label">Shares</div><div class="value">{{ summary.totals.shares if summary.totals else 0 }}</div></div>
+</div>
+
+<section class="panel">
+  <h2>Charts</h2>
+  {% if summary.charts %}
+  <div class="charts">
+    {% for name, path in summary.charts.items() %}
+    <div>
+      <div class="muted" style="margin-bottom:0.35rem">{{ name }}</div>
+      <img src="{{ url_for('charts', filename=name + '.png') }}" alt="{{ name }}" />
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <p class="muted">No charts yet. After posts exist (or dry-run metrics), click <strong>Refresh metrics + report</strong>.</p>
+  {% endif %}
+</section>
+
+<section class="panel">
+  <h2>By platform</h2>
+  <table>
+    <thead><tr><th>Platform</th><th>Views</th><th>Likes</th><th>Comments</th><th>Shares</th><th>Saves</th></tr></thead>
+    <tbody>
+      {% for p, vals in (summary.by_platform or {}).items() %}
+      <tr>
+        <td>{{ p }}</td>
+        <td>{{ vals.views }}</td>
+        <td>{{ vals.likes }}</td>
+        <td>{{ vals.comments }}</td>
+        <td>{{ vals.shares }}</td>
+        <td>{{ vals.saves }}</td>
+      </tr>
+      {% else %}
+      <tr><td colspan="6" class="muted">No samples yet.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+
+<section class="panel">
+  <h2>Daily reports</h2>
+  {% for r in reports %}
+  <details style="margin-bottom:0.75rem">
+    <summary class="mono">{{ r.name }}</summary>
+    <pre class="report">{{ r.text }}</pre>
+  </details>
+  {% else %}
+  <p class="muted">Reports appear after the daily analytics job or a manual refresh.</p>
+  {% endfor %}
+</section>
+{% endblock %}

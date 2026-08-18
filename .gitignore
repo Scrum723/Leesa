@@ -1,0 +1,32 @@
+.env
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+data/*.db
+data/*.sqlite
+data/charts/
+data/posted/
+data/youtube_*.json
+data/*secrets*
+data/*token*
+logs/*.log
+logs/*.jsonl
+inbox/*
+!inbox/.gitkeep
+*.mp4
+*.mov
+*.avi
+.DS_Store
+.idea/
+.vscode/
+# Mac Electron build artifacts (source stays; rebuild with npm)
+mac-app/node_modules/
+mac-app/dist/
+# Railway / local
+.railway/
+*.dmg
+*.blockmap

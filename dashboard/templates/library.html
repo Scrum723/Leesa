@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block title %}Content Library{% endblock %}
+{% block heading %}Content Library{% endblock %}
+{% block content %}
+<p class="muted">
+  Videos, written insights, and <strong>bundles</strong> (clip + your writing).
+  Local folder: <span class="mono">{{ library_root }}</span>
+</p>
+
+<div class="grid">
+  <div class="card"><div class="label">Videos</div><div class="value">{{ counts.video }}</div></div>
+  <div class="card"><div class="label">Articles</div><div class="value">{{ counts.article }}</div></div>
+  <div class="card"><div class="label">Bundles</div><div class="value">{{ counts.bundle }}</div></div>
+  <div class="card"><div class="label">Ready</div><div class="value">{{ counts.ready }}</div></div>
+</div>
+
+<section class="panel">
+  <div class="panel-header">
+    <h2>How to drop content</h2>
+    <form method="post" action="{{ url_for('library_scan') }}">
+      <button class="btn" type="submit">Rescan library</button>
+    </form>
+  </div>
+  <ul class="muted">
+    <li><span class="mono">videos/ready/</span> — finished clips</li>
+    <li><span class="mono">articles/ready/</span> — finished writing (.md / .txt)</li>
+    <li><span class="mono">bundles/YYYY-MM-DD-slug/</span> — <code>video.mp4</code> + <code>insight.md</code> + <code>meta.yaml</code></li>
+    <li>Copy <span class="mono">bundles/_TEMPLATE</span> for each new story</li>
+  </ul>
+</section>
+
+<section class="panel">
+  <h2>Library items</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Stage</th>
+        <th>Title</th>
+        <th>Path</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for it in items %}
+      <tr>
+        <td><span class="status-pill">{{ it.kind }}</span></td>
+        <td>{{ it.status_folder }}</td>
+        <td>
+          <strong>{{ it.title_hint }}</strong>
+          {% if it.body %}
+          <div class="muted" style="max-width:360px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+            {{ it.body[:140] }}
+          </div>
+          {% endif %}
+        </td>
+        <td class="mono muted" style="font-size:0.75rem">{{ it.path }}</td>
+        <td>
+          {% if it.status_folder == 'ready' %}
+          <form class="inline" method="post" action="{{ url_for('library_post') }}">
+            <input type="hidden" name="path" value="{{ it.path }}" />
+            <button class="btn small primary" type="submit">Post now</button>
+          </form>
+          {% else %}
+          <span class="muted">—</span>
+          {% endif %}
+        </td>
+      </tr>
+      {% else %}
+      <tr><td colspan="5" class="muted">Library empty — add files under Doc Weather Content.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+{% endblock %}

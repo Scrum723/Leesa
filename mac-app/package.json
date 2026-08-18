@@ -1,0 +1,62 @@
+{
+  "name": "doc-weather-liaison",
+  "version": "1.0.0",
+  "description": "Doc Weather Social Media Liaison — Mac desktop app (Railway dashboard + local content library)",
+  "main": "main.js",
+  "author": "Charles Clottin / Doc Weather",
+  "license": "UNLICENSED",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder --mac dmg zip",
+    "dist:dir": "electron-builder --mac dir"
+  },
+  "build": {
+    "appId": "com.docweather.socialliaison",
+    "productName": "Doc Weather Liaison",
+    "copyright": "Copyright © Doc Weather",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "renderer/**/*",
+      "assets/**/*",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "resources",
+        "to": "resources",
+        "filter": [
+          "**/*"
+        ]
+      }
+    ],
+    "mac": {
+      "category": "public.app-category.social-networking",
+      "target": [
+        "dmg",
+        "zip"
+      ],
+      "hardenedRuntime": false,
+      "gatekeeperAssess": false,
+      "identity": null
+    },
+    "dmg": {
+      "title": "Doc Weather Liaison"
+    }
+  },
+  "dependencies": {
+    "electron-store": "^8.2.0"
+  },
+  "devDependencies": {
+    "electron": "^33.2.1",
+    "electron-builder": "^25.1.8"
+  },
+  "allowScripts": {
+    "electron@33.4.11": true
+  }
+}

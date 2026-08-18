@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block title %}Posts{% endblock %}
+{% block heading %}Posts & video queue{% endblock %}
+{% block content %}
+<section class="panel">
+  <div class="panel-header">
+    <h2>Video queue</h2>
+    <form method="post" action="{{ url_for('posts_run_next') }}">
+      <button class="btn primary" type="submit">Process next queued video</button>
+    </form>
+  </div>
+  <table>
+    <thead>
+      <tr><th>ID</th><th>File</th><th>Status</th><th>Discovered</th><th>Posted</th><th>Error</th><th></th></tr>
+    </thead>
+    <tbody>
+      {% for j in jobs %}
+      <tr>
+        <td class="mono">#{{ j.id }}</td>
+        <td>{{ j.filename }}</td>
+        <td><span class="status-pill {{ j.status }}">{{ j.status }}</span></td>
+        <td class="mono muted">{{ j.discovered_at[:19] if j.discovered_at else '—' }}</td>
+        <td class="mono muted">{{ j.posted_at[:19] if j.posted_at else '—' }}</td>
+        <td class="muted">{{ j.error or '' }}</td>
+        <td>
+          {% if j.status in ['queued', 'failed', 'partial'] %}
+          <form class="inline" method="post" action="{{ url_for('posts_run_job', job_id=j.id) }}">
+            <button class="btn small" type="submit">Run</button>
+          </form>
+          {% endif %}
+        </td>
+      </tr>
+      {% else %}
+      <tr><td colspan="7" class="muted">No jobs. Drop a video into the inbox folder.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+
+<section class="panel">
+  <h2>Published posts</h2>
+  <table>
+    <thead>
+      <tr><th>When</th><th>Platform</th><th>Title</th><th>Status</th><th>External</th></tr>
+    </thead>
+    <tbody>
+      {% for p in posts %}
+      <tr>
+        <td class="mono muted">{{ p.posted_at[:19] if p.posted_at else '—' }}</td>
+        <td>{{ p.platform }}</td>
+        <td>{{ p.title or '—' }}</td>
+        <td><span class="status-pill {{ p.status }}">{{ p.status }}</span></td>
+        <td>
+          {% if p.url %}
+            <a href="{{ p.url }}" target="_blank" rel="noopener">{{ p.url }}</a>
+          {% else %}
+            <span class="mono muted">{{ p.external_id }}</span>
+          {% endif %}
+        </td>
+      </tr>
+      {% else %}
+      <tr><td colspan="5" class="muted">No posts recorded yet.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+{% endblock %}

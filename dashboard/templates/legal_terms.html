@@ -1,0 +1,85 @@
+{% extends "legal_base.html" %}
+{% block title %}Terms of Service{% endblock %}
+{% block heading %}Terms of Service{% endblock %}
+{% block legal_body %}
+<h2>Terms of Service</h2>
+<p class="muted">Effective date: August 9, 2026</p>
+
+<h3>1. Agreement</h3>
+<p>
+  By accessing or using the Doc Weather Social Media Liaison dashboard, desktop application,
+  APIs, agents, or related services (the “Service”), you agree to these Terms of Service
+  (“Terms”). If you do not agree, do not use the Service.
+</p>
+
+<h3>2. The Service</h3>
+<p>
+  The Service helps you organize content (videos, articles, bundles), generate captions,
+  schedule or publish posts to connected social platforms, monitor engagement, and view
+  analytics. Features may include AI-assisted text, folder monitoring, and automated replies
+  where configured.
+</p>
+
+<h3>3. Accounts &amp; credentials</h3>
+<ul>
+  <li>You must provide accurate information and keep platform API credentials secure.</li>
+  <li>You are responsible for all activity under your connected accounts.</li>
+  <li>You must have the legal right to connect each social account and publish content on it.</li>
+  <li>Do not share API keys, tokens, or dashboard secrets publicly.</li>
+</ul>
+
+<h3>4. Your content</h3>
+<ul>
+  <li>You retain ownership of content you upload or author.</li>
+  <li>You grant us a limited license to process, store, transform, and transmit your content
+      solely to operate the Service (e.g., generate captions, upload media to platforms you choose).</li>
+  <li>You represent that your content does not infringe others’ rights and complies with law
+      and each platform’s rules.</li>
+</ul>
+
+<h3>5. AI features</h3>
+<p>
+  AI-generated titles, descriptions, hashtags, and replies are assistive only. You are responsible
+  for reviewing and approving content before live publication. We do not guarantee accuracy,
+  virality, or platform ranking outcomes.
+</p>
+
+<h3>6. Third-party platforms</h3>
+<p>
+  The Service integrates with third parties (including X, Instagram/Meta, TikTok, YouTube/Google,
+  Railway hosting, and AI providers). Their terms and availability control those integrations.
+  Outages, API changes, rate limits, or account actions by those providers are outside our control.
+</p>
+
+<h3>7. Acceptable use</h3>
+<p>
+  You must follow the <a href="{{ url_for('legal_violations') }}">Violations &amp; Acceptable Use</a>
+  policy. We may suspend or terminate access for violations.
+</p>
+
+<h3>8. Disclaimers</h3>
+<p>
+  THE SERVICE IS PROVIDED “AS IS” AND “AS AVAILABLE” WITHOUT WARRANTIES OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT.
+  Weather-related messaging remains your editorial responsibility; do not present automated output
+  as official NWS warnings unless sourced and verified.
+</p>
+
+<h3>9. Limitation of liability</h3>
+<p>
+  To the maximum extent permitted by law, {{ brand_name }} / Charles Clottin shall not be liable
+  for indirect, incidental, special, consequential, or punitive damages, or loss of profits, data,
+  goodwill, or platform account access, arising from use of the Service.
+</p>
+
+<h3>10. Changes</h3>
+<p>
+  We may update these Terms. Continued use after changes are posted constitutes acceptance.
+  Material changes will be reflected by the “Last updated” date on these legal pages.
+</p>
+
+<h3>11. Contact</h3>
+<p>
+  Questions about these Terms: <a href="{{ linktree }}" target="_blank" rel="noopener">linktr.ee/URP</a>
+</p>
+{% endblock %}

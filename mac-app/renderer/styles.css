@@ -1,0 +1,73 @@
+:root {
+  --bg: #0b1220;
+  --panel: #121a2b;
+  --border: #243049;
+  --text: #e8eefc;
+  --muted: #93a0b8;
+  --accent: #3b82f6;
+  --ok: #22c55e;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; font-family: "Segoe UI", system-ui, sans-serif; background: var(--bg); color: var(--text); }
+.shell { display: grid; grid-template-columns: 300px 1fr; height: 100vh; }
+.side {
+  background: #0a1220;
+  border-right: 1px solid var(--border);
+  padding: 1rem;
+  overflow: auto;
+}
+.brand-title { font-weight: 700; font-size: 1.05rem; }
+.brand-sub { color: var(--muted); font-size: 0.8rem; margin-bottom: 1rem; }
+.block { margin-bottom: 1.1rem; }
+.label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); margin-bottom: 0.4rem; }
+.btn {
+  display: block; width: 100%;
+  margin: 0.3rem 0;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-radius: 8px;
+  padding: 0.5rem 0.65rem;
+  cursor: pointer;
+  text-align: left;
+  font-size: 0.85rem;
+}
+.btn:hover { border-color: var(--accent); }
+.btn.primary { background: var(--accent); border-color: #2563eb; font-weight: 600; }
+.mono { font-family: ui-monospace, Menlo, monospace; font-size: 0.72rem; }
+.path { word-break: break-all; color: var(--muted); margin: 0 0 0.4rem; }
+.counts { font-size: 0.85rem; margin-bottom: 0.4rem; }
+.item-list { list-style: none; padding: 0; margin: 0.4rem 0 0; max-height: 220px; overflow: auto; }
+.item-list li {
+  font-size: 0.78rem;
+  padding: 0.35rem 0;
+  border-bottom: 1px solid var(--border);
+}
+.item-list .tag {
+  display: inline-block;
+  font-size: 0.68rem;
+  padding: 0.1rem 0.35rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  margin-right: 0.3rem;
+  color: var(--muted);
+}
+.muted { color: var(--muted); font-size: 0.8rem; }
+.main { display: flex; flex-direction: column; min-width: 0; }
+.toolbar {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 0.45rem 0.75rem;
+  border-bottom: 1px solid var(--border);
+  background: #0f1726;
+}
+.pill {
+  font-size: 0.72rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 0.15rem 0.55rem;
+  color: var(--muted);
+}
+.pill.on { color: #86efac; border-color: #166534; }
+webview, #dash { flex: 1; width: 100%; border: 0; background: #111; }
+.fallback { padding: 2rem; }
+.hidden { display: none; }

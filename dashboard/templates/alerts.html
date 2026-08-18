@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}Alerts{% endblock %}
+{% block heading %}Activity alerts{% endblock %}
+{% block content %}
+<section class="panel">
+  <p class="muted">Important activity while you're away: posting errors, engagement spikes, negative comments, and schedule notices. macOS notifications + optional webhook.</p>
+  <table>
+    <thead>
+      <tr><th>When</th><th>Severity</th><th>Category</th><th>Platform</th><th>Title / body</th><th></th></tr>
+    </thead>
+    <tbody>
+      {% for a in alerts %}
+      <tr>
+        <td class="mono muted">{{ a.created_at[:19] }}</td>
+        <td>
+          {% if a.severity == 'error' %}<span class="badge danger">error</span>
+          {% elif a.severity == 'warning' %}<span class="badge warn">warning</span>
+          {% else %}<span class="badge ok">info</span>{% endif %}
+        </td>
+        <td class="mono">{{ a.category }}</td>
+        <td>{{ a.platform or '—' }}</td>
+        <td>
+          <strong>{{ a.title }}</strong>
+          {% if a.body %}<div class="muted">{{ a.body }}</div>{% endif %}
+        </td>
+        <td>
+          {% if not a.acknowledged %}
+          <form class="inline" method="post" action="{{ url_for('alerts_ack', alert_id=a.id) }}">
+            <button class="btn small" type="submit">Ack</button>
+          </form>
+          {% else %}
+          <span class="muted">acked</span>
+          {% endif %}
+        </td>
+      </tr>
+      {% else %}
+      <tr><td colspan="6" class="muted">No alerts yet.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+{% endblock %}

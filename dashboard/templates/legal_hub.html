@@ -1,0 +1,34 @@
+{% extends "legal_base.html" %}
+{% block title %}Legal{% endblock %}
+{% block heading %}Legal &amp; policies{% endblock %}
+{% block legal_body %}
+<h2>Doc Weather Social Media Liaison — Legal Center</h2>
+<p>
+  These policies govern use of the Social Media Liaison dashboard, Mac app, agent, and related
+  automation services operated by <strong>{{ brand_name }}</strong> / Charles Clottin (Doc Weather).
+</p>
+
+<div class="legal-card-grid">
+  <a class="legal-card" href="{{ url_for('legal_terms') }}">
+    <strong>Terms of Service</strong>
+    <span>Rules for using the app, accounts, and posting automation.</span>
+  </a>
+  <a class="legal-card" href="{{ url_for('legal_privacy') }}">
+    <strong>Privacy Policy</strong>
+    <span>How personal and account information is handled.</span>
+  </a>
+  <a class="legal-card" href="{{ url_for('legal_data') }}">
+    <strong>Data Collection</strong>
+    <span>What data we collect, store, process, and why.</span>
+  </a>
+  <a class="legal-card" href="{{ url_for('legal_violations') }}">
+    <strong>Violations &amp; Acceptable Use</strong>
+    <span>Prohibited conduct and enforcement actions.</span>
+  </a>
+</div>
+
+<p class="muted" style="margin-top:1rem">
+  Platform-specific rules (X, Instagram, TikTok, YouTube, Meta) still apply. You are responsible for
+  complying with each network’s terms when connecting accounts or publishing content.
+</p>
+{% endblock %}

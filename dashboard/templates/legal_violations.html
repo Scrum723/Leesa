@@ -1,0 +1,73 @@
+{% extends "legal_base.html" %}
+{% block title %}Violations &amp; Acceptable Use{% endblock %}
+{% block heading %}Violations &amp; Acceptable Use{% endblock %}
+{% block legal_body %}
+<h2>Violations of Service &amp; Acceptable Use Policy</h2>
+<p class="muted">Effective date: August 9, 2026</p>
+
+<p>
+  This policy defines prohibited uses of the Social Media Liaison Service and the consequences
+  of violations. It supplements the
+  <a href="{{ url_for('legal_terms') }}">Terms of Service</a>.
+</p>
+
+<h3>1. Acceptable use</h3>
+<p>You may use the Service only to manage content and accounts you own or are authorized to operate, in compliance with law and each platform’s rules (X, Instagram/Meta, TikTok, YouTube, etc.).</p>
+
+<h3>2. Prohibited conduct (violations)</h3>
+<p>You agree <strong>not</strong> to use the Service to:</p>
+<ul>
+  <li><strong>Spam or manipulate:</strong> mass unsolicited messages, engagement bait farms, fake metrics, or coordinated inauthentic behavior.</li>
+  <li><strong>Harass or harm:</strong> threats, hate, bullying, doxxing, or content intended to cause severe distress.</li>
+  <li><strong>Misrepresent weather or safety:</strong> fabricate warnings, watches, or emergency instructions; claim official government status you do not have.</li>
+  <li><strong>Infringe rights:</strong> upload copyrighted media or trademarks without permission; violate publicity/privacy rights.</li>
+  <li><strong>Illegal content:</strong> content that is unlawful in applicable jurisdictions (including CSAM, terrorism facilitation, fraud).</li>
+  <li><strong>Security abuse:</strong> attempt to breach accounts, scrape others’ private data, reverse engineer for harm, or overload systems.</li>
+  <li><strong>Credential abuse:</strong> use stolen tokens, share secrets publicly, or access another person’s accounts without authorization.</li>
+  <li><strong>Circumvent platform bans:</strong> evade suspensions or API restrictions on connected networks.</li>
+  <li><strong>Malware / phishing:</strong> distribute malware or deceptive links through automated posts or replies.</li>
+  <li><strong>Child exploitation:</strong> any sexual content involving minors; zero tolerance.</li>
+</ul>
+
+<h3>3. Platform rules still apply</h3>
+<p>
+  Even if an action is technically possible through the agent, it remains a violation if it
+  breaches X, Meta, TikTok, YouTube, or other provider policies. We may prioritize those rules
+  when investigating reports.
+</p>
+
+<h3>4. Reporting violations</h3>
+<p>
+  Report abuse or policy concerns via
+  <a href="{{ linktree }}" target="_blank" rel="noopener">linktr.ee/URP</a>
+  with relevant post links, timestamps, and screenshots when possible.
+</p>
+
+<h3>5. Enforcement</h3>
+<p>Depending on severity and history, we may:</p>
+<ul>
+  <li>Warn and require corrective action.</li>
+  <li>Disable auto-posting, auto-replies, or AI features.</li>
+  <li>Disconnect accounts or revoke Service access.</li>
+  <li>Delete operational data associated with abusive use.</li>
+  <li>Report unlawful activity to platforms or law enforcement.</li>
+</ul>
+<p>
+  We may act without prior notice when needed to protect users, systems, or the public
+  (especially safety-critical false weather emergencies).
+</p>
+
+<h3>6. Appeals</h3>
+<p>
+  If you believe enforcement was in error, contact us with your handle, approximate time of the
+  action, and a brief explanation. We will review in good faith but are not obligated to restore
+  access where risk remains high.
+</p>
+
+<h3>7. Related documents</h3>
+<p>
+  <a href="{{ url_for('legal_terms') }}">Terms of Service</a> ·
+  <a href="{{ url_for('legal_privacy') }}">Privacy Policy</a> ·
+  <a href="{{ url_for('legal_data') }}">Data Collection</a>
+</p>
+{% endblock %}

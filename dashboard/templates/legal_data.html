@@ -1,0 +1,100 @@
+{% extends "legal_base.html" %}
+{% block title %}Data Collection{% endblock %}
+{% block heading %}Data Collection{% endblock %}
+{% block legal_body %}
+<h2>Data Collection Practices</h2>
+<p class="muted">Effective date: August 9, 2026 · Companion to the Privacy Policy</p>
+
+<p>
+  This page explains <strong>what data the Social Media Liaison Service collects or processes</strong>,
+  where it typically lives, and why. It is written for transparency (including app store / platform
+  review contexts).
+</p>
+
+<h3>1. Data categories</h3>
+<table>
+  <thead>
+    <tr><th>Category</th><th>Examples</th><th>Purpose</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Identity / social handles</td>
+      <td>@handles, display names, platform user IDs</td>
+      <td>Connect and label accounts in the dashboard</td>
+    </tr>
+    <tr>
+      <td>Authentication secrets</td>
+      <td>API keys, OAuth tokens, page tokens</td>
+      <td>Call platform APIs on your behalf</td>
+    </tr>
+    <tr>
+      <td>Media &amp; writing</td>
+      <td>Videos, images, Markdown/text insights, captions</td>
+      <td>Generate posts and publish content you approve</td>
+    </tr>
+    <tr>
+      <td>AI prompts &amp; outputs</td>
+      <td>Title/description/hashtag drafts, comment replies</td>
+      <td>Assist content creation and engagement</td>
+    </tr>
+    <tr>
+      <td>Engagement metrics</td>
+      <td>Views, likes, comments, shares (when APIs allow)</td>
+      <td>Analytics charts and performance reports</td>
+    </tr>
+    <tr>
+      <td>Comments &amp; replies</td>
+      <td>Comment text, author ids, reply text</td>
+      <td>Moderation signals and optional auto-replies</td>
+    </tr>
+    <tr>
+      <td>Operational logs</td>
+      <td>Job status, errors, event JSONL, alerts</td>
+      <td>Reliability, debugging, away-mode alerts</td>
+    </tr>
+    <tr>
+      <td>Device / host metadata</td>
+      <td>Request IPs, user agent (via host); local paths on Mac</td>
+      <td>Serve dashboard; watch local content library</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3>2. What we do <em>not</em> intentionally collect</h3>
+<ul>
+  <li>Payment card numbers (not processed by this app).</li>
+  <li>Precise GPS tracking of end users browsing public posts.</li>
+  <li>Contacts lists, SMS, or microphone audio beyond media files you explicitly provide.</li>
+  <li>Sale of personal data to data brokers.</li>
+</ul>
+
+<h3>3. Where data may be stored</h3>
+<ul>
+  <li><strong>Your Mac:</strong> content library folders, local SQLite DB, logs, optional app settings.</li>
+  <li><strong>Railway (or other host):</strong> dashboard app, environment variables/secrets, ephemeral runtime logs.</li>
+  <li><strong>Social platforms:</strong> published posts, comments, and metrics under your accounts.</li>
+  <li><strong>AI provider:</strong> prompt/response content when generation features are enabled.</li>
+</ul>
+
+<h3>4. Legal bases / purposes (practical)</h3>
+<ul>
+  <li><strong>Provide the Service</strong> you request (posting, analytics, engagement).</li>
+  <li><strong>Secure and maintain</strong> the Service (logs, error handling).</li>
+  <li><strong>Comply</strong> with law and platform requirements.</li>
+</ul>
+
+<h3>5. Your controls</h3>
+<ul>
+  <li>Toggle dry-run, AI content, and auto-engage in configuration.</li>
+  <li>Remove accounts in the dashboard; revoke tokens at each platform.</li>
+  <li>Delete files under <span class="mono">Doc Weather Content</span> and local databases.</li>
+  <li>Contact us via <a href="{{ linktree }}" target="_blank" rel="noopener">linktr.ee/URP</a> for data questions.</li>
+</ul>
+
+<h3>6. Related policies</h3>
+<p>
+  <a href="{{ url_for('legal_privacy') }}">Privacy Policy</a> ·
+  <a href="{{ url_for('legal_terms') }}">Terms of Service</a> ·
+  <a href="{{ url_for('legal_violations') }}">Violations &amp; Acceptable Use</a>
+</p>
+{% endblock %}

@@ -1,0 +1,85 @@
+{% extends "legal_base.html" %}
+{% block title %}Privacy Policy{% endblock %}
+{% block heading %}Privacy Policy{% endblock %}
+{% block legal_body %}
+<h2>Privacy Policy</h2>
+<p class="muted">Effective date: August 9, 2026</p>
+
+<h3>1. Who we are</h3>
+<p>
+  This Privacy Policy describes how <strong>{{ brand_name }}</strong> / Charles Clottin
+  (“we,” “us”) handles information in connection with the Social Media Liaison Service
+  (dashboard, Mac app, and agents).
+</p>
+
+<h3>2. Information we handle</h3>
+<ul>
+  <li><strong>Account &amp; profile data:</strong> handles, display names, platform account IDs you connect.</li>
+  <li><strong>Credentials you provide:</strong> API keys, access tokens, OAuth secrets (stored as configuration secrets; not intended for public display).</li>
+  <li><strong>Content:</strong> videos, articles, captions, metadata, and bundle files you supply.</li>
+  <li><strong>Usage &amp; ops data:</strong> job logs, post results, engagement metrics, alerts, error traces.</li>
+  <li><strong>Technical data:</strong> IP addresses and request metadata may be processed by hosting providers (e.g., Railway) when you access the dashboard.</li>
+</ul>
+
+<h3>3. How we use information</h3>
+<ul>
+  <li>Operate posting, scheduling, engagement, analytics, and the dashboard.</li>
+  <li>Generate AI-assisted captions or replies when you enable those features.</li>
+  <li>Maintain security, debug issues, and improve reliability.</li>
+  <li>Comply with legal obligations and enforce our policies.</li>
+</ul>
+
+<h3>4. Sharing</h3>
+<p>We share information only as needed to run the Service, including with:</p>
+<ul>
+  <li>Social platforms you connect (to publish content and read comments/metrics).</li>
+  <li>Infrastructure providers (hosting, storage, logging).</li>
+  <li>AI providers when content generation or reply features are enabled.</li>
+  <li>Authorities when required by law.</li>
+</ul>
+<p>We do not sell your personal information.</p>
+
+<h3>5. Retention</h3>
+<p>
+  Content, logs, and metrics are retained as needed for the Service and your configuration
+  (for example, analytics retention settings). You may delete local library files at any time.
+  Revoking platform tokens on the provider side stops new API access.
+</p>
+
+<h3>6. Security</h3>
+<p>
+  We use reasonable measures such as environment secrets, access controls, and HTTPS on the
+  hosted dashboard. No method of transmission or storage is 100% secure. Protect your devices
+  and never post tokens in public chats.
+</p>
+
+<h3>7. Your choices</h3>
+<ul>
+  <li>Disconnect social accounts and rotate API credentials.</li>
+  <li>Disable AI replies or auto-engage features in settings.</li>
+  <li>Run the Service in dry-run mode to avoid live publishing.</li>
+  <li>Delete local content folders and request removal of hosted operational data where feasible.</li>
+</ul>
+
+<h3>8. Children</h3>
+<p>
+  The Service is not directed to children under 13 (or the age required in your jurisdiction).
+  Do not provide children’s personal information through the Service.
+</p>
+
+<h3>9. International users</h3>
+<p>
+  If you access the Service from outside the United States, you understand information may be
+  processed in the U.S. or other locations where our providers operate.
+</p>
+
+<h3>10. Contact</h3>
+<p>
+  Privacy questions: <a href="{{ linktree }}" target="_blank" rel="noopener">linktr.ee/URP</a>
+</p>
+
+<p class="muted">
+  See also: <a href="{{ url_for('legal_data') }}">Data Collection</a> for a practical inventory
+  of data categories and purposes.
+</p>
+{% endblock %}

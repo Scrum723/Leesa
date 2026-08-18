@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{% block title %}Social Media Liaison{% endblock %} · {{ brand_name }}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}" />
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand">{{ brand_name }}</div>
+      <div class="brand-sub">Social Media Liaison</div>
+      <nav class="nav">
+        <a href="{{ url_for('index') }}" class="{% if request.path == '/' %}active{% endif %}">Overview</a>
+        <a href="{{ url_for('accounts_page') }}" class="{% if request.path.startswith('/accounts') %}active{% endif %}">Accounts</a>
+        <a href="{{ url_for('settings_page') }}" class="{% if request.path.startswith('/settings') %}active{% endif %}">Platform Settings</a>
+        <a href="{{ url_for('library_page') }}" class="{% if request.path.startswith('/library') %}active{% endif %}">Content Library</a>
+        <a href="{{ url_for('posts_page') }}" class="{% if request.path.startswith('/posts') %}active{% endif %}">Posts & Queue</a>
+        <a href="{{ url_for('analytics_page') }}" class="{% if request.path.startswith('/analytics') %}active{% endif %}">Analytics</a>
+        <a href="{{ url_for('alerts_page') }}" class="{% if request.path.startswith('/alerts') %}active{% endif %}">Alerts</a>
+        <div class="nav-section">Legal</div>
+        <a href="{{ url_for('legal_hub') }}" class="{% if request.path.startswith('/legal') %}active{% endif %}">Policies</a>
+        <a href="{{ url_for('legal_terms') }}" class="{% if request.path == '/legal/terms' %}active{% endif %}">Terms of Service</a>
+        <a href="{{ url_for('legal_privacy') }}" class="{% if request.path == '/legal/privacy' %}active{% endif %}">Privacy Policy</a>
+        <a href="{{ url_for('legal_data') }}" class="{% if request.path == '/legal/data-collection' %}active{% endif %}">Data Collection</a>
+        <a href="{{ url_for('legal_violations') }}" class="{% if request.path == '/legal/violations' %}active{% endif %}">Violations</a>
+      </nav>
+      <p class="muted" style="margin-top:2rem;font-size:0.78rem">
+        CTA: <a href="{{ linktree }}" target="_blank" rel="noopener">linktr.ee/URP</a><br />
+        <a href="{{ url_for('legal_hub') }}">Legal center</a>
+      </p>
+    </aside>
+    <main class="main">
+      <div class="topbar">
+        <h1>{% block heading %}Dashboard{% endblock %}</h1>
+        <div>
+          {% if dry_run %}
+            <span class="badge warn">DRY RUN</span>
+          {% else %}
+            <span class="badge ok">LIVE</span>
+          {% endif %}
+        </div>
+      </div>
+
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          <div class="flash-wrap">
+            {% for cat, msg in messages %}
+              <div class="flash {{ cat }}">{{ msg }}</div>
+            {% endfor %}
+          </div>
+        {% endif %}
+      {% endwith %}
+
+      {% block content %}{% endblock %}
+    </main>
+  </div>
+  <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+</body>
+</html>

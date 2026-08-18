@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block title %}Settings{% endblock %}
+{% block heading %}Per-platform response settings{% endblock %}
+{% block content %}
+<p class="muted">Configure how the agent responds on each network. Changes are stored in the local database and override <span class="mono">config.yaml</span> defaults.</p>
+
+{% for p in platforms %}
+{% set s = platform_settings.get(p, {}) %}
+<section class="panel">
+  <h2>{{ p | capitalize }}</h2>
+  <form method="post" action="{{ url_for('settings_save', platform=p) }}">
+    <div class="form-grid">
+      <label class="checkbox-row"><input type="checkbox" name="enabled" {% if s.get('enabled', true) %}checked{% endif %} /> Enabled</label>
+      <label class="checkbox-row"><input type="checkbox" name="reply_to_comments" {% if s.get('reply_to_comments', true) %}checked{% endif %} /> Reply to comments</label>
+      <label class="checkbox-row"><input type="checkbox" name="notify_followers" {% if s.get('notify_followers', true) %}checked{% endif %} /> Notify followers after post</label>
+      <div>
+        <label>Reply mode</label>
+        <select name="reply_mode">
+          {% for mode in ['ai', 'template', 'off'] %}
+          <option value="{{ mode }}" {% if s.get('reply_mode', 'ai') == mode %}selected{% endif %}>{{ mode }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div>
+        <label>Max hashtags</label>
+        <input type="number" name="max_hashtags" min="0" max="30" value="{{ s.get('max_hashtags', 8) }}" />
+      </div>
+      <div>
+        <label>Max replies / hour</label>
+        <input type="number" name="max_replies_per_hour" min="0" max="100" value="{{ s.get('max_replies_per_hour', 15) }}" />
+      </div>
+      <div style="grid-column: 1 / -1">
+        <label>Engage keywords (comma-separated)</label>
+        <input type="text" name="engage_keywords" value="{{ (s.get('engage_keywords') or []) | join(', ') }}" placeholder="weather, buffalo, storm" />
+      </div>
+      {% if p == 'youtube' %}
+      <div>
+        <label>Privacy</label>
+        <select name="privacy_status">
+          {% for st in ['public', 'unlisted', 'private'] %}
+          <option value="{{ st }}" {% if s.get('privacy_status', 'public') == st %}selected{% endif %}>{{ st }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <label class="checkbox-row"><input type="checkbox" name="notify_subscribers" {% if s.get('notify_subscribers', true) %}checked{% endif %} /> Notify subscribers on upload</label>
+      {% endif %}
+      {% if p == 'tiktok' %}
+      <div>
+        <label>Privacy level</label>
+        <select name="privacy_level">
+          {% for st in ['PUBLIC_TO_EVERYONE', 'MUTUAL_FOLLOW_FRIENDS', 'SELF_ONLY'] %}
+          <option value="{{ st }}" {% if s.get('privacy_level', 'PUBLIC_TO_EVERYONE') == st %}selected{% endif %}>{{ st }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      {% endif %}
+    </div>
+    <p style="margin-top:0.85rem"><button class="btn primary" type="submit">Save {{ p }}</button></p>
+  </form>
+</section>
+{% endfor %}
+
+<section class="panel">
+  <h2>Schedule (from config.yaml)</h2>
+  <table>
+    <tr><th>Timezone</th><td class="mono">{{ schedule.get('timezone', 'America/New_York') }}</td></tr>
+    <tr><th>Daily post</th><td class="mono">{{ schedule.get('daily_post_time', '10:00') }}</td></tr>
+    <tr><th>Daily analytics</th><td class="mono">{{ schedule.get('daily_analytics_time', '21:00') }}</td></tr>
+    <tr><th>Engagement poll</th><td class="mono">{{ schedule.get('engagement_poll_seconds', 90) }}s</td></tr>
+    <tr><th>Monitor poll</th><td class="mono">{{ schedule.get('monitor_poll_seconds', 120) }}s</td></tr>
+  </table>
+  <p class="muted">Edit <span class="mono">config.yaml</span> and restart the agent to change schedule times.</p>
+</section>
+{% endblock %}
