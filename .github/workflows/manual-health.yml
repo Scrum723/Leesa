@@ -30,6 +30,7 @@ jobs:
       - name: Import & dashboard smoke
         env:
           DRY_RUN: "true"
+          PYTHONPATH: "."
         run: |
           echo "Note: ${{ inputs.note }}"
           python -c "from src.config import load_settings; print('settings ok', load_settings().streamer_name)"

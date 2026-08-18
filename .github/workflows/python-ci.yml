@@ -42,5 +42,6 @@ jobs:
           DRY_RUN: "true"
           DASHBOARD_HOST: "127.0.0.1"
           DASHBOARD_PORT: "8787"
+          PYTHONPATH: "."
         run: |
           pytest -q
