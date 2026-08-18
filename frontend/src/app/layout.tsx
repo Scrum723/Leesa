@@ -7,7 +7,7 @@ export const metadata: Metadata = {
     "LEESA helps Doc Weather manage videos and writing across X, Instagram, TikTok, and YouTube.",
   other: {
     // TikTok Developer Portal website verification (meta tag method)
-    "tiktok-developers-site-verification": "IcaeOgyGv3nJ5KFUdhGxO6SiUVLmaTy8",
+    "tiktok-developers-site-verification": "IcaeOgyGv3nJ5KFUdhGxO6SiUVLmaTy8-2",
   },
 };
 
@@ -21,7 +21,7 @@ export default function RootLayout({
       <head>
         <meta
           name="tiktok-developers-site-verification"
-          content="IcaeOgyGv3nJ5KFUdhGxO6SiUVLmaTy8"
+          content="IcaeOgyGv3nJ5KFUdhGxO6SiUVLmaTy8-2"
         />
       </head>
       <body>{children}</body>

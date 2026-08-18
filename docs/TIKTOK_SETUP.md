@@ -4,10 +4,10 @@
 
 TikTok must be able to fetch a verification file or meta tag from your **public website URL**.
 
-### Verification file content
+### Verification file content (current)
 
 ```text
-tiktok-developers-site-verification=IcaeOgyGv3nJ5KFUdhGxO6SiUVLmaTy8
+tiktok-developers-site-verification=IcaeOgyGv3nJ5KFUdhGxO6SiUVLmaTy8-2
 ```
 
 ### Use one of these as your TikTok “Website URL”
@@ -19,13 +19,13 @@ tiktok-developers-site-verification=IcaeOgyGv3nJ5KFUdhGxO6SiUVLmaTy8
 
 ### File must open in a browser (plain text)
 
-- Pages: https://scrum723.github.io/Leesa/tiktokIcaeOgyGv3nJ5KFUdhGxO6SiUVLmaTy8.txt  
-- Railway: https://social-media-liaison-production.up.railway.app/tiktokIcaeOgyGv3nJ5KFUdhGxO6SiUVLmaTy8.txt  
+- Pages: https://scrum723.github.io/Leesa/tiktokIcaeOgyGv3nJ5KFUdhGxO6SiUVLmaTy8-2.txt  
+- Railway: https://social-media-liaison-production.up.railway.app/tiktokIcaeOgyGv3nJ5KFUdhGxO6SiUVLmaTy8-2.txt  
 
 Also embedded on the Pages homepage as:
 
 ```html
-<meta name="tiktok-developers-site-verification" content="IcaeOgyGv3nJ5KFUdhGxO6SiUVLmaTy8" />
+<meta name="tiktok-developers-site-verification" content="IcaeOgyGv3nJ5KFUdhGxO6SiUVLmaTy8-2" />
 ```
 
 ### In TikTok for Developers
