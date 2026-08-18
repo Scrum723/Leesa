@@ -265,6 +265,17 @@ def create_app(agent: SocialMediaLiaisonAgent | None = None) -> Flask:
         )
         return redirect(url_for("library_page"))
 
+    # --- TikTok Developer Portal website verification ---
+    @app.get("/tiktokIcaeOgyGv3nJ5KFUdhGxO6SiUVLmaTy8.txt")
+    def tiktok_site_verification():
+        """Serve TikTok domain verification file at site root (required by TikTok portal)."""
+        static_dir = Path(__file__).parent / "static"
+        return send_from_directory(
+            str(static_dir),
+            "tiktokIcaeOgyGv3nJ5KFUdhGxO6SiUVLmaTy8.txt",
+            mimetype="text/plain",
+        )
+
     # --- Legal / policy pages (public links for app review & users) ---
     @app.get("/legal")
     def legal_hub():

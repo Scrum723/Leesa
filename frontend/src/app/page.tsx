@@ -11,6 +11,11 @@ const links = [
   { href: `${RAILWAY}/legal/violations`, label: "Violations & Acceptable Use", desc: "Prohibited conduct" },
   { href: "https://linktr.ee/URP", label: "linktr.ee/URP", desc: "Doc Weather links hub" },
   { href: "https://github.com/Scrum723/Leesa", label: "GitHub Repository", desc: "Source code & Actions" },
+  {
+    href: "./tiktokIcaeOgyGv3nJ5KFUdhGxO6SiUVLmaTy8.txt",
+    label: "TikTok site verification file",
+    desc: "Must return plain text for Developer Portal verify",
+  },
 ];
 
 export default function Home() {
