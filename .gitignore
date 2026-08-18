@@ -30,3 +30,5 @@ mac-app/dist/
 .railway/
 *.dmg
 *.blockmap
+frontend/.next/
+frontend/out/
