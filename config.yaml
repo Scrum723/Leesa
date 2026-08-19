@@ -95,10 +95,22 @@ schedule:
   daily_post_time: "10:00"
   # Analytics report generation
   daily_analytics_time: "21:00"
+  # Daily audience poll (native X poll) — 09:00 Eastern per LEESA ops report
+  daily_poll_time: "09:00"
+  # How often to check for polls due for results collection (seconds)
+  poll_results_check_seconds: 900
   # Continuous engagement poll interval (seconds)
   engagement_poll_seconds: 90
   # Account activity monitor interval (seconds)
   monitor_poll_seconds: 120
+
+# Daily WNY audience polls
+polls:
+  enabled: true
+  ai_generate: true
+  duration_minutes: 1440   # 24h
+  primary_platform: x
+  # Instagram/TikTok/YouTube: no native poll API in LEESA yet — logged as skipped
 
 # Content generation (SpaceXAI)
 content:

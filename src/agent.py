@@ -20,6 +20,7 @@ from .config import ROOT, Settings
 from .engagement.alerts import AlertService
 from .engagement.monitor import EngagementMonitor
 from .logging_setup import EventLog, setup_logging
+from .polls.service import PollService
 from .posting.orchestrator import PostingOrchestrator
 from .video_watcher import VideoWatcher
 
@@ -35,6 +36,7 @@ class SocialMediaLiaisonAgent:
         self.watcher = VideoWatcher(settings, self.events)
         self.engagement = EngagementMonitor(settings, self.orch, self.events)
         self.analytics = AnalyticsModule(settings, self.orch, self.events)
+        self.polls = PollService(settings, self.orch, self.events)
         self.alerts = AlertService(settings, self.events)
         self.scheduler = BackgroundScheduler()
         self._stop = threading.Event()
@@ -94,11 +96,15 @@ class SocialMediaLiaisonAgent:
 
         post_time = str(sched.get("daily_post_time", "10:00"))
         analytics_time = str(sched.get("daily_analytics_time", "21:00"))
+        poll_time = str(sched.get("daily_poll_time", "09:00"))
         post_h, post_m = _parse_hhmm(post_time)
         an_h, an_m = _parse_hhmm(analytics_time)
+        poll_h, poll_m = _parse_hhmm(poll_time)
 
         eng_every = int(sched.get("engagement_poll_seconds", 90))
         mon_every = int(sched.get("monitor_poll_seconds", 120))
+        poll_check = int(sched.get("poll_results_check_seconds", 900))
+        polls_enabled = bool((self.settings.config.get("polls") or {}).get("enabled", True))
 
         self.scheduler.add_job(
             self.job_daily_post,
@@ -112,6 +118,19 @@ class SocialMediaLiaisonAgent:
             id="daily_analytics",
             replace_existing=True,
         )
+        if polls_enabled:
+            self.scheduler.add_job(
+                self.job_daily_poll,
+                CronTrigger(hour=poll_h, minute=poll_m, timezone=tz),
+                id="daily_poll",
+                replace_existing=True,
+            )
+            self.scheduler.add_job(
+                self.job_poll_results,
+                IntervalTrigger(seconds=max(60, poll_check)),
+                id="poll_results",
+                replace_existing=True,
+            )
         if self.settings.auto_engage_enabled:
             self.scheduler.add_job(
                 self.job_engagement,
@@ -133,7 +152,9 @@ class SocialMediaLiaisonAgent:
             replace_existing=True,
         )
         log.info(
-            "Scheduler: daily post %02d:%02d %s | analytics %02d:%02d | eng every %ss",
+            "Scheduler: poll %02d:%02d | daily post %02d:%02d %s | analytics %02d:%02d | eng every %ss",
+            poll_h,
+            poll_m,
             post_h,
             post_m,
             tz_name,
@@ -141,6 +162,54 @@ class SocialMediaLiaisonAgent:
             an_m,
             eng_every,
         )
+
+    def job_daily_poll(self) -> None:
+        """09:00 Eastern daily audience poll (X native poll)."""
+        log.info("Daily poll job fired")
+        try:
+            result = self.polls.prepare_and_post()
+            if result.get("skipped"):
+                log.info("Daily poll skipped: %s", result.get("reason"))
+                return
+            ok = bool(result.get("ok"))
+            self.alerts.notify_now(
+                "Daily poll posted" if ok else "Daily poll failed",
+                result.get("url") or result.get("error") or "",
+                severity="info" if ok else "error",
+                category="poll",
+                platform="x",
+            )
+            # Honest multi-platform status for ops reports
+            for p in ("instagram", "tiktok", "youtube"):
+                if not self.settings.is_platform_enabled(p):
+                    continue
+                # Native polls not implemented on these platforms yet
+                db.create_alert(
+                    "info",
+                    "poll",
+                    f"Poll skipped on {p}",
+                    "No native poll API in LEESA yet; X poll is primary.",
+                    platform=p,
+                )
+        except Exception as e:
+            log.exception("Daily poll failed")
+            db.create_alert("error", "error", "Daily poll crashed", str(e))
+
+    def job_poll_results(self) -> None:
+        """Collect results for polls whose 24h window ended."""
+        try:
+            collected = self.polls.collect_due_results()
+            for item in collected:
+                if item.get("ok"):
+                    self.alerts.notify_now(
+                        "Poll results ready",
+                        item.get("report") or f"poll_id={item.get('poll_id')}",
+                        severity="info",
+                        category="poll",
+                        platform="x",
+                    )
+        except Exception as e:
+            log.exception("Poll results collection failed: %s", e)
 
     def job_daily_post(self) -> None:
         log.info("Daily post job fired")

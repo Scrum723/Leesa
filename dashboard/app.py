@@ -204,6 +204,25 @@ def create_app(agent: SocialMediaLiaisonAgent | None = None) -> Flask:
     def charts(filename: str):
         return send_from_directory(str(ROOT / "data" / "charts"), filename)
 
+    @app.get("/polls")
+    def polls_page():
+        return render_template("polls.html", polls=db.list_polls(limit=50))
+
+    @app.post("/polls/run-now")
+    def polls_run_now():
+        if not agent:
+            flash("Agent not attached.", "error")
+            return redirect(url_for("polls_page"))
+        result = agent.polls.prepare_and_post(force=True)
+        if result.get("ok"):
+            flash(
+                f"Poll posted ({'dry-run' if result.get('dry_run') else 'live'}): {result.get('url') or result.get('external_id')}",
+                "ok",
+            )
+        else:
+            flash(f"Poll failed: {result.get('error') or result}", "error")
+        return redirect(url_for("polls_page"))
+
     @app.get("/alerts")
     def alerts_page():
         alerts = db.list_alerts(limit=100)

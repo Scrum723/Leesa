@@ -139,6 +139,26 @@ CREATE TABLE IF NOT EXISTS content_items (
     updated_at TEXT NOT NULL
 );
 
+
+CREATE TABLE IF NOT EXISTS polls (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    run_date TEXT NOT NULL,
+    question TEXT NOT NULL,
+    options_json TEXT NOT NULL,
+    status TEXT NOT NULL DEFAULT 'prepared',
+    platform TEXT DEFAULT 'x',
+    external_id TEXT DEFAULT '',
+    url TEXT DEFAULT '',
+    posted_at TEXT,
+    results_due_at TEXT,
+    results_json TEXT DEFAULT '{}',
+    results_collected_at TEXT,
+    report_path TEXT DEFAULT '',
+    error TEXT DEFAULT '',
+    created_at TEXT NOT NULL,
+    updated_at TEXT NOT NULL
+);
+
 CREATE TABLE IF NOT EXISTS agent_state (
     key TEXT PRIMARY KEY,
     value TEXT NOT NULL,
@@ -535,3 +555,72 @@ def update_content_item(path: str, **fields: Any) -> None:
     vals = list(fields.values()) + [path]
     with get_db() as conn:
         conn.execute(f"UPDATE content_items SET {cols} WHERE path = ?", vals)
+
+
+def create_poll(
+    run_date: str,
+    question: str,
+    options: list[str],
+    platform: str = "x",
+    status: str = "prepared",
+) -> int:
+    now = utcnow()
+    with get_db() as conn:
+        cur = conn.execute(
+            """
+            INSERT INTO polls
+            (run_date, question, options_json, status, platform, created_at, updated_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+            """,
+            (run_date, question, json.dumps(options), status, platform, now, now),
+        )
+        return int(cur.lastrowid)
+
+
+def update_poll(poll_id: int, **fields: Any) -> None:
+    if not fields:
+        return
+    fields["updated_at"] = utcnow()
+    cols = ", ".join(f"{k} = ?" for k in fields)
+    vals = list(fields.values()) + [poll_id]
+    with get_db() as conn:
+        conn.execute(f"UPDATE polls SET {cols} WHERE id = ?", vals)
+
+
+def get_poll(poll_id: int) -> dict[str, Any] | None:
+    with get_db() as conn:
+        row = conn.execute("SELECT * FROM polls WHERE id = ?", (poll_id,)).fetchone()
+        return dict(row) if row else None
+
+
+def list_polls(limit: int = 50) -> list[dict[str, Any]]:
+    with get_db() as conn:
+        rows = conn.execute(
+            "SELECT * FROM polls ORDER BY id DESC LIMIT ?", (limit,)
+        ).fetchall()
+        return [dict(r) for r in rows]
+
+
+def polls_due_for_results() -> list[dict[str, Any]]:
+    with get_db() as conn:
+        rows = conn.execute(
+            """
+            SELECT * FROM polls
+            WHERE status = 'posted'
+              AND results_due_at IS NOT NULL
+              AND results_due_at <= ?
+              AND (results_collected_at IS NULL OR results_collected_at = '')
+            ORDER BY id ASC
+            """,
+            (utcnow(),),
+        ).fetchall()
+        return [dict(r) for r in rows]
+
+
+def poll_for_date(run_date: str) -> dict[str, Any] | None:
+    with get_db() as conn:
+        row = conn.execute(
+            "SELECT * FROM polls WHERE run_date = ? ORDER BY id DESC LIMIT 1",
+            (run_date,),
+        ).fetchone()
+        return dict(row) if row else None

@@ -18,6 +18,7 @@
         <a href="{{ url_for('library_page') }}" class="{% if request.path.startswith('/library') %}active{% endif %}">Content Library</a>
         <a href="{{ url_for('posts_page') }}" class="{% if request.path.startswith('/posts') %}active{% endif %}">Posts & Queue</a>
         <a href="{{ url_for('analytics_page') }}" class="{% if request.path.startswith('/analytics') %}active{% endif %}">Analytics</a>
+        <a href="{{ url_for('polls_page') }}" class="{% if request.path.startswith('/polls') %}active{% endif %}">Daily Polls</a>
         <a href="{{ url_for('alerts_page') }}" class="{% if request.path.startswith('/alerts') %}active{% endif %}">Alerts</a>
         <div class="nav-section">Legal</div>
         <a href="{{ url_for('legal_hub') }}" class="{% if request.path.startswith('/legal') %}active{% endif %}">Policies</a>

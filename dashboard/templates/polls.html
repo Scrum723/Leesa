@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title %}Daily Polls{% endblock %}
+{% block heading %}Daily audience polls{% endblock %}
+{% block content %}
+<p class="muted">
+  Scheduled <strong>09:00 America/New_York</strong> · Native <strong>X</strong> poll (24h) ·
+  Results auto-collected afterward. Instagram / TikTok / YouTube native polls not wired yet.
+</p>
+
+<div class="panel-header" style="margin-bottom:1rem">
+  <div class="muted">Prepared poll from ops report is used when AI is unavailable.</div>
+  <form method="post" action="{{ url_for('polls_run_now') }}">
+    <button class="btn primary" type="submit">Post poll now</button>
+  </form>
+</div>
+
+<section class="panel">
+  <h2>Recent polls</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Status</th>
+        <th>Question</th>
+        <th>Link</th>
+        <th>Results</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for p in polls %}
+      <tr>
+        <td class="mono">{{ p.run_date }}</td>
+        <td><span class="status-pill {{ p.status }}">{{ p.status }}</span></td>
+        <td>
+          {{ p.question }}
+          {% if p.error %}<div class="muted">{{ p.error }}</div>{% endif %}
+        </td>
+        <td>
+          {% if p.url %}<a href="{{ p.url }}" target="_blank" rel="noopener">open</a>
+          {% else %}<span class="mono muted">{{ p.external_id }}</span>{% endif %}
+        </td>
+        <td class="muted">
+          {% if p.report_path %}<span class="mono">{{ p.report_path.split('/')[-1] }}</span>
+          {% elif p.results_due_at %}due {{ p.results_due_at[:16] }}
+          {% else %}—{% endif %}
+        </td>
+      </tr>
+      {% else %}
+      <tr><td colspan="5" class="muted">No polls yet. Click “Post poll now” or wait for 09:00 ET.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+
+<section class="panel">
+  <h2>Connectivity notes (from daily ops report)</h2>
+  <ul class="muted">
+    <li><strong>X:</strong> LEESA uses organic OAuth 1.0a — native polls supported when credentials are valid (not Ads-only).</li>
+    <li><strong>Instagram / TikTok / YouTube:</strong> No native poll API in LEESA yet; skipped with logged alerts.</li>
+    <li>After 24h, results reports land in <span class="mono">data/polls/</span>.</li>
+  </ul>
+</section>
+{% endblock %}

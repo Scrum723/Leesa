@@ -32,3 +32,4 @@ mac-app/dist/
 *.blockmap
 frontend/.next/
 frontend/out/
+data/polls/*.md

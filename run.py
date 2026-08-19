@@ -35,6 +35,8 @@ def main() -> None:
     parser.add_argument("--post-now", action="store_true", help="Process next queued video then exit")
     parser.add_argument("--scan", action="store_true", help="Scan inbox, enqueue new videos, exit")
     parser.add_argument("--analytics-now", action="store_true", help="Collect metrics + write report, exit")
+    parser.add_argument("--poll-now", action="store_true", help="Generate + post today's audience poll (X), exit")
+    parser.add_argument("--poll-results-now", action="store_true", help="Collect due poll results, exit")
     parser.add_argument("--inbox", type=Path, default=None, help="Override video inbox folder")
     args = parser.parse_args()
 
@@ -68,6 +70,15 @@ def main() -> None:
         agent.analytics.collect_all()
         report = agent.analytics.generate_daily_report()
         print(report)
+        return
+
+    if args.poll_now:
+        result = agent.polls.prepare_and_post(force=True)
+        print(result)
+        return
+
+    if args.poll_results_now:
+        print(agent.polls.collect_due_results())
         return
 
     if args.dashboard_only:

@@ -138,6 +138,108 @@ class XClient(PlatformClient):
             log.exception("X text post failed")
             return PostResult(platform=self.name, success=False, error=str(e))
 
+    def create_poll(
+        self,
+        text: str,
+        options: list[str],
+        duration_minutes: int = 1440,
+    ) -> PostResult:
+        """Create an organic X post with a native poll (OAuth 1.0a user context)."""
+        opts = [str(o).strip()[:25] for o in options if str(o).strip()][:4]
+        if len(opts) < 2:
+            return PostResult(platform=self.name, success=False, error="Need at least 2 poll options")
+        duration_minutes = max(5, min(int(duration_minutes), 10080))
+        text = (text or "").strip()
+        if len(text) > 280:
+            text = text[:277].rstrip() + "…"
+
+        if self.dry_run or not self._client:
+            if not self.is_configured() and not self.dry_run:
+                return PostResult(platform=self.name, success=False, error="X credentials missing")
+            log.info("[DRY_RUN] X poll: %s | options=%s | %sm", text, opts, duration_minutes)
+            return PostResult(
+                platform=self.name,
+                success=True,
+                external_id="dry_poll_x",
+                url="https://example.local/dry/x-poll",
+                dry_run=True,
+                raw={"options": opts, "duration_minutes": duration_minutes, "text": text},
+            )
+
+        try:
+            resp = self._client.create_tweet(
+                text=text,
+                poll_options=opts,
+                poll_duration_minutes=duration_minutes,
+            )
+            tweet_id = ""
+            if resp and getattr(resp, "data", None):
+                tweet_id = str(resp.data.get("id", ""))
+            url = f"https://x.com/i/status/{tweet_id}" if tweet_id else ""
+            log.info("Posted X poll: %s", url or tweet_id)
+            return PostResult(
+                platform=self.name,
+                success=bool(tweet_id),
+                external_id=tweet_id,
+                url=url,
+                raw={"options": opts, "duration_minutes": duration_minutes},
+            )
+        except Exception as e:
+            log.exception("X poll create failed")
+            return PostResult(platform=self.name, success=False, error=str(e))
+
+    def fetch_poll_results(self, tweet_id: str) -> dict[str, Any]:
+        """Fetch poll options + vote counts for a tweet."""
+        if not tweet_id or tweet_id.startswith("dry_"):
+            return {"ok": True, "options": [], "total_votes": 0, "note": "dry_run"}
+        if self.dry_run or not self._client:
+            return {"ok": True, "options": [], "total_votes": 0, "note": "dry_run_or_no_client"}
+        try:
+            resp = self._client.get_tweet(
+                tweet_id,
+                expansions=["attachments.poll_ids"],
+                poll_fields=["options", "voting_status", "end_datetime", "duration_minutes"],
+            )
+            includes = getattr(resp, "includes", None) or {}
+            polls = includes.get("polls") if isinstance(includes, dict) else None
+            if not polls and hasattr(includes, "get"):
+                polls = includes.get("polls")
+            # tweepy may return objects
+            poll_list = polls or []
+            if not poll_list:
+                # Fallback raw
+                data = getattr(resp, "data", None)
+                return {
+                    "ok": False,
+                    "error": "No poll attachment on tweet",
+                    "raw": str(data)[:300],
+                }
+            poll = poll_list[0]
+            raw_opts = getattr(poll, "options", None) or (poll.get("options") if isinstance(poll, dict) else [])
+            options = []
+            total = 0
+            for i, o in enumerate(raw_opts or []):
+                if isinstance(o, dict):
+                    label = o.get("label", "")
+                    votes = int(o.get("votes", 0) or 0)
+                    position = int(o.get("position", i) or i)
+                else:
+                    label = getattr(o, "label", "")
+                    votes = int(getattr(o, "votes", 0) or 0)
+                    position = int(getattr(o, "position", i) or i)
+                total += votes
+                options.append({"label": label, "votes": votes, "position": position})
+            return {
+                "ok": True,
+                "options": options,
+                "total_votes": total,
+                "voting_status": getattr(poll, "voting_status", None)
+                or (poll.get("voting_status") if isinstance(poll, dict) else None),
+            }
+        except Exception as e:
+            log.warning("X poll results failed: %s", e)
+            return {"ok": False, "error": str(e)}
+
     def notify_followers(self, content: GeneratedContent, post: PostResult) -> PostResult | None:
         if not self.cfg.get("notify_followers", True):
             return None
