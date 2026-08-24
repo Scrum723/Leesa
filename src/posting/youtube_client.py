@@ -39,9 +39,10 @@ class YouTubeClient(PlatformClient):
         from google_auth_oauthlib.flow import InstalledAppFlow
         from googleapiclient.discovery import build
 
+        # Upload-only scope — avoids Google "delete videos" consent + verification friction.
+        # Comment-reply features that need force-ssl can re-auth later with extra scopes.
         scopes = [
             "https://www.googleapis.com/auth/youtube.upload",
-            "https://www.googleapis.com/auth/youtube.force-ssl",
         ]
         s = self.settings
         creds = None
