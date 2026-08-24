@@ -17,7 +17,7 @@ def main() -> None:
     secrets = Path(settings.youtube_client_secrets_file).expanduser()
     token_path = Path(settings.youtube_token_file).expanduser()
     if not secrets.exists():
-        print(f"Missing client secrets: {secrets}")
+        print("Missing YouTube client secrets file.")
         sys.exit(1)
 
     from google_auth_oauthlib.flow import InstalledAppFlow
