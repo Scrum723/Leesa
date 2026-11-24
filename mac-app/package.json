@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Doc Weather Social Media Liaison — Mac desktop app (Railway dashboard + local content library)",
   "main": "main.js",
-  "author": "Charles Clottin / Doc Weather",
+  "author": "Scrum723",
   "license": "UNLICENSED",
   "scripts": {
     "start": "electron .",

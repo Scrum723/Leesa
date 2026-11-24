@@ -60,7 +60,7 @@ THE SERVICE IS PROVIDED “AS IS” AND “AS AVAILABLE” WITHOUT WARRANTIES OF
 
 9. Limitation of liability
 
-To the maximum extent permitted by law, Doc Weather / Charles Clottin shall not be liable for indirect, incidental, special, consequential, or punitive damages, or loss of profits, data, goodwill, or platform account access, arising from use of the Service.
+To the maximum extent permitted by law, Doc Weather / Scrum723 shall not be liable for indirect, incidental, special, consequential, or punitive damages, or loss of profits, data, goodwill, or platform account access, arising from use of the Service.
 
 10. Changes
 
@@ -76,7 +76,7 @@ Effective date: August 9, 2026
 
 1. Who we are
 
-This Privacy Policy describes how Doc Weather / Charles Clottin (“we,” “us”) handles information in connection with the Social Media Liaison Service (dashboard, Mac app, and agents).
+This Privacy Policy describes how Doc Weather / Scrum723 (“we,” “us”) handles information in connection with the Social Media Liaison Service (dashboard, Mac app, and agents).
 
 2. Information we handle
 

@@ -2,7 +2,7 @@
 
 Monitors a video inbox, generates viral captions with **SpaceXAI (xAI)**, posts daily to **X, Instagram, TikTok, and YouTube**, notifies fans, engages comments, runs continuous account monitoring with alerts, and serves a simple web dashboard for accounts + per-platform settings + analytics.
 
-**Brand:** Doc Weather / Charles Clottin · CTA: https://linktr.ee/URP  
+**Brand:** Doc Weather / Scrum723 · CTA: https://linktr.ee/URP  
 **Companion:** `~/stream-chat-agent` (live chat), `weather-viral-posts` skill (nightly forecast packages)
 
 ## Features
